@@ -1,0 +1,1 @@
+mysite project contains polls app which takes poll for list of questions. 
