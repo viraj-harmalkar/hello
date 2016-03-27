@@ -1,0 +1,17 @@
+
+{% load staticfiles %}
+
+<h1><center>Categories</center></h1>
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+ <!-- cat_list contains distinct categories -->
+{% if cat_list %}
+    <ul>
+    <!-- List the categories -->
+    {% for cat in cat_list %}
+    
+    <h3>    <li><a href="{% url 'polls:index' cat.category  %}">{{ cat.category }}</a></li></h3> {% endfor %}
+   
+    </ul>
+{% else %}
+    <p>No categories are available.</p>
+{% endif %}
