@@ -1,12 +1,13 @@
+
 {% load staticfiles %}
-<h2><center>Poll Questions</center></h2>
+<h1><center>Poll Questions</center></h1>
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
 
 {% if latest_question_list %}
     <ul>
-    <!-- List the questions -->
+    <!-- List the questions of perticular category(upto 5 recent) -->
     {% for question in latest_question_list %}
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>    {% endfor %}
+        <h3><li><a href="{% url 'polls:detail' question.category  question.id %}">{{ question.question_text }}</a></li></h3>    {% endfor %}
     </ul>
 {% else %}
     <p>No polls are available.</p>

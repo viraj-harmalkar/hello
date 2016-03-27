@@ -1,13 +1,16 @@
+
 <h1>{{ question.question_text }}</h1>
 <!-- For case where directly submit is clicked -->
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'polls:vote' question.id %}" method="post">
+<form action="{% url 'polls:vote' question.category question.id %}" method="post">
 {% csrf_token %}
 {% for choice in question.choice_set.all %}
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
     <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
 {% endfor %}
+<br/>
 <input type="submit" value="Vote" />  <!-- forward it to vote method of views.py -->
 </form>
-<a href="{% url 'polls:index' %}">Go to Poll again</a>
+<a href="{% url 'polls:cat'  %}">Go to Poll again</a>
+

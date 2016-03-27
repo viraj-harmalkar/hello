@@ -8,19 +8,35 @@ from .models import Choice, Question
 
 #ListView and DetailView are built in views.
 
-#For Starting list of questions
+#For Categories
+class CatView(generic.ListView):
+    template_name = 'polls/cat.html'
+    context_object_name = 'cat_list'
+
+    def get_queryset(self):
+        """
+        Return Categories.
+        """
+        return Question.objects.order_by().values('category').distinct()
+
+
+#For list of questions
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
 
+    
+
     def get_queryset(self):
+        category2=self.kwargs['category2']
         """
         Return the last five published questions (not including   those set to be
         published in the future).
         """
         return Question.objects.filter(
-            pub_date__lte=timezone.now()
+            pub_date__lte=timezone.now(), category = category2
         ).order_by('-pub_date')[:5]
+
 
 #For Vote page
 class DetailView(generic.DetailView):
@@ -33,11 +49,12 @@ class DetailView(generic.DetailView):
         return Question.objects.filter(pub_date__lte=timezone.now())
 
 #For Number of votes page
+
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
-def vote(request, question_id):
+def vote(request, question_category, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
@@ -53,4 +70,4 @@ def vote(request, question_id):
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+        return HttpResponseRedirect(reverse('polls:results', args=(question_category, question.id,)))
